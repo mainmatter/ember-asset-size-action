@@ -1,33 +1,28 @@
 {
-  "name": "node12-template-action",
+  "name": "ember-asset-size-action",
   "version": "0.0.0",
   "private": true,
-  "description": "Node 12 template action",
-  "main": "lib/main.js",
+  "description": "Show asset size changes on ",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "test": "jest"
+    "test": "mocha -r esm"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-template.git"
+    "url": "git+https://github.com/mansona/ember-asset-size-action.git"
   },
   "keywords": [
     "actions",
     "node",
     "setup"
   ],
-  "author": "GitHub",
+  "author": "Chris Manson",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.0.0"
+    "@actions/core": "^1.0.0",
+    "esm": "^3.2.25"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.13",
-    "@types/node": "^12.0.4",
-    "jest": "^24.8.0",
-    "jest-circus": "^24.7.1",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.1"
+    "mocha": "^6.2.0"
   }
 }
