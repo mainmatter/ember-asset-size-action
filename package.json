@@ -20,6 +20,9 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.0.0",
+    "@actions/exec": "^1.0.0",
+    "@actions/github": "^1.0.0",
+    "asset-size-reporter": "^0.1.0",
     "esm": "^3.2.25"
   },
   "devDependencies": {

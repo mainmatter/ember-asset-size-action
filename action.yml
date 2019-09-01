@@ -2,9 +2,8 @@ name: 'Node 12 Template Action'
 description: 'Get started with Node actions'
 author: 'GitHub'
 inputs:
-  myInput:
-    description: 'Input to use'
-    default: 'world'
+  repo-token:
+    description: 'The GITHUB_TOKEN secret'
 runs:
   using: 'node12'
   main: 'index.js'
