@@ -23,7 +23,8 @@
     "@actions/exec": "^1.0.0",
     "@actions/github": "^1.0.0",
     "asset-size-reporter": "^0.1.0",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "pretty-bytes": "^4.0.0"
   },
   "devDependencies": {
     "mocha": "^6.2.0"

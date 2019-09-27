@@ -2,14 +2,16 @@ import { getInput, debug, setFailed } from '@actions/core';
 import { exec } from '@actions/exec';
 import { GitHub, context } from '@actions/github';
 import assetSizeReporter from 'asset-size-reporter';
+import prettyBytes from 'pretty-bytes';
 
 const repoInfo = context.repo;
 
-const myToken = getInput('repo-token', { required: true });
-const octokit = new GitHub(myToken);
+let octokit;
 
 async function run() {
   try {
+    const myToken = getInput('repo-token', { required: true });
+    octokit = new GitHub(myToken);
     const pullRequest = await getPullRequest();
 
     const prAssets = await getAssetSizes();
@@ -104,40 +106,55 @@ function diffSizes(destination, origin) {
   return diffObject;
 }
 
-function buildOutputText(output) {
-  let files = Object.keys(output);
+export function buildOutputText(output) {
+  let files = Object.keys(output).map((key) => {
+    return {
+      file: key,
+      raw: output[key].raw,
+      gzip: output[key].gzip,
+    }
+  });
 
-  let bigger = '';
-  let smaller = '';
-  let same = '';
+  let bigger = [];
+  let smaller = [];
+  let same = [];
 
   files.forEach((file) => {
-    let changeLine = `${file}\traw: ${output[file].raw}\tgzip: ${output[file].gzip}\n`;
-
-    if(output[file].raw > 0) {
-      bigger += changeLine;
-    } else if (output[file].raw < 0) {
-      smaller += changeLine;
+    if(file.raw > 0) {
+      bigger.push(file);
+    } else if (file.raw < 0) {
+      smaller.push(file);
     } else {
-      same += changeLine;
+      same.push(file)
     }
   });
 
   let outputText = '';
 
-  if (bigger) {
-    outputText += `Files that got Bigger 🚨:\n${bigger}\n`
+  if (bigger.length) {
+    outputText += `Files that got Bigger 🚨:\n\n${reportTable(bigger)}\n`
   }
 
-  if (smaller) {
-    outputText += `Files that got Smaller 🎉:\n${smaller}\n`
+  if (smaller.length) {
+    outputText += `Files that got Smaller 🎉:\n\n${reportTable(smaller)}\n\n`
   }
 
-  if (same) {
-    outputText += `Files that stayed the same size 🤷‍:\n${same}\n`
+  if (same.length) {
+    outputText += `Files that stayed the same size 🤷‍:\n\n${reportTable(same)}\n\n`
   }
 
   return outputText;
+}
+
+function reportTable(data) {
+  let table = `File | raw | gzip
+--- | --- | ---
+`
+  data.forEach(function(item) {
+    table += `${item.file}|${prettyBytes(item.raw, {signed: true})}|${prettyBytes(item.gzip, {signed: true})}\n`
+  });
+
+  return table;
 }
 
 export default run;
