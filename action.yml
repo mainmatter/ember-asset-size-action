@@ -1,6 +1,9 @@
-name: 'Node 12 Template Action'
-description: 'Get started with Node actions'
-author: 'GitHub'
+name: 'Ember Asset Size'
+description: 'Find out how much of a change to your asset size a PR will have'
+author: 'Chris Manson'
+branding:
+  icon: 'bar-chart-2'
+  color: 'orange'
 inputs:
   repo-token:
     description: 'The GITHUB_TOKEN secret'
