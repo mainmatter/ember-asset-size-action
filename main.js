@@ -26,7 +26,7 @@ async function run() {
       owner: context.repo.owner,
       repo: context.repo.repo,
       issue_number: pullRequest.number,
-      body: fileDiffs
+      body: buildOutputText(fileDiffs),
     });
   } catch (error) {
     setFailed(error.message);
@@ -102,6 +102,42 @@ function diffSizes(destination, origin) {
   });
 
   return diffObject;
+}
+
+function buildOutputText(output) {
+  let files = Object.keys(output);
+
+  let bigger = '';
+  let smaller = '';
+  let same = '';
+
+  files.forEach((file) => {
+    let changeLine = `${file}\traw: ${output[file].raw}\tgzip: ${output[file].gzip}\n`;
+
+    if(output[file].raw > 0) {
+      bigger += changeLine;
+    } else if (output[file].raw < 0) {
+      smaller += changeLine;
+    } else {
+      same += changeLine;
+    }
+  });
+
+  let outputText = '';
+
+  if (bigger) {
+    outputText += `Files that got Bigger 🚨:\n${bigger}\n`
+  }
+
+  if (smaller) {
+    outputText += `Files that got Smaller 🎉:\n${smaller}\n`
+  }
+
+  if (same) {
+    outputText += `Files that stayed the same size 🤷‍:\n${same}\n`
+  }
+
+  return outputText;
 }
 
 export default run;
