@@ -5,6 +5,9 @@ import assetSizeReporter from 'asset-size-reporter';
 
 const repoInfo = context.repo;
 
+const myToken = getInput('repo-token', { required: true });
+const octokit = new GitHub(myToken);
+
 async function run() {
   try {
     const pullRequest = await getPullRequest();
@@ -17,9 +20,14 @@ async function run() {
 
     const masterAssets = await getAssetSizes();
 
-    console.log(masterAssets);
+    let fileDiffs = diffSizes(normaliseFingerprint(prAssets), normaliseFingerprint(masterAssets));
 
-    setFailed("just testing");
+    await octokit.issues.createComment({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      issue_number: pullRequest.number,
+      body: fileDiffs
+    });
   } catch (error) {
     setFailed(error.message);
   }
@@ -53,9 +61,6 @@ async function getPullRequest() {
     return;
   }
 
-  const myToken = getInput('repo-token', { required: true });
-  const octokit = new GitHub(myToken);
-
   const { data: pullRequest } = await octokit.pulls.get({
     owner: pr.base.repo.owner.login,
     repo: pr.base.repo.name,
@@ -63,6 +68,40 @@ async function getPullRequest() {
   })
 
   return pullRequest;
+}
+
+function normaliseFingerprint(obj) {
+  let normalisedObject = {};
+
+  Object.keys(obj).forEach((key) => {
+    let [, fileName, extension] = key.match(/dist\/assets\/([\w-]+)-\w{32}(.\w+)/);
+
+    normalisedObject[`${fileName}${extension}`] = obj[key];
+  });
+
+  return normalisedObject;
+}
+
+function diffSizes(destination, origin) {
+  let diffObject = {}
+  Object.keys(destination).forEach((key) => {
+    let destinationSize = destination[key];
+    let originSize = origin[key];
+
+    // new file i.e. does not exist in origin
+    if (!originSize) {
+      diffObject[key] = destinationSize;
+    } else {
+      diffObject[key] = {
+        raw: destinationSize.raw - originSize.raw,
+        gzip: destinationSize.gzip - originSize.gzip,
+      }
+    }
+
+    // TODO cater for deleted files
+  });
+
+  return diffObject;
 }
 
 export default run;
