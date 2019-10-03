@@ -7,7 +7,7 @@ This action will calculate the diff in asset size for your main JS files and CSS
 Create a file named `.github/workflows/ember-assets.yml` in your repo and add the following:
 
 ```yaml
-name: Node CI
+name: Ember Asset Sizes
 
 on: [pull_request]
 
