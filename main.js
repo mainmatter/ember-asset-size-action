@@ -76,9 +76,14 @@ function normaliseFingerprint(obj) {
   let normalisedObject = {};
 
   Object.keys(obj).forEach((key) => {
-    let [, fileName, extension] = key.match(/dist\/assets\/([\w-]+)-\w{32}(.\w+)/);
+    let match = key.match(/dist\/assets\/([\w-]+)-\w{32}(.\w+)/);
 
-    normalisedObject[`${fileName}${extension}`] = obj[key];
+    if(match) {
+      let [, fileName, extension] = match
+      normalisedObject[`${fileName}${extension}`] = obj[key];
+    } else {
+      console.log(`Ignoring file ${key} as it does not match known asset file pattern`);
+    }
   });
 
   return normalisedObject;
