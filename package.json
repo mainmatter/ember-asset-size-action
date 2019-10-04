@@ -5,7 +5,7 @@
   "description": "Show asset size changes on ",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r esm"
+    "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=simplabs/ember-asset-size-action mocha -r esm"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,11 @@
     "@actions/github": "^1.0.0",
     "asset-size-reporter": "^0.1.0",
     "esm": "^3.2.25",
-    "pretty-bytes": "^4.0.0"
+    "pretty-bytes": "^5.0.0"
   },
   "devDependencies": {
-    "mocha": "^6.2.0"
+    "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
+    "mocha": "^6.2.1"
   }
 }
