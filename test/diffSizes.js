@@ -25,9 +25,9 @@ describe("Diff Sizes", function() {
 
     expect(diff).to.deep.equal({
       'auto-import-fastboot.js': { raw: 221142, gzip: 76707 },
-      'ember-website.js': { raw: -2995, gzip: -1013 },
+      'ember-website.js': { raw: 2995, gzip: 1013 },
       'ember-website-fastboot.js': { raw: 0, gzip: 0 },
-      'vendor.js': { raw: -388401, gzip: -129560 },
+      'vendor.js': { raw: 388401, gzip: 129560 },
       'ember-website.css': { raw: 0, gzip: 0 },
       'vendor.css': { raw: 0, gzip: 0 }
     })
