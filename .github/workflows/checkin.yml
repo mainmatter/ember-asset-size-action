@@ -10,5 +10,8 @@ jobs:
     - name: "npm ci"
       run: npm ci
 
+    - name: "lint"
+      run: npx eslint .
+
     - name: "npm test"
       run: npm test
