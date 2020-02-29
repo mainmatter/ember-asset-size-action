@@ -10,21 +10,44 @@ import {
   getAssetSizes,
 } from './lib/helpers';
 
-let octokit;
-
 async function run() {
   try {
     const myToken = getInput('repo-token', { required: true });
+    const cwd = getInput('cwd');
+    const usePrArtifacts = getInput('usePrArtifacts');
+
     octokit = getOctokit(myToken);
+
     const pullRequest = await getPullRequest(context, octokit);
+    const fileDiffs = await diffAssets({ pullRequest, cwd, usePrArtifacts });
 
-    const prAssets = await getAssetSizes();
+    await commentOnPR({ octokit, pullRequest, fileDiffs })
+  } catch (error) {
+    setFailed(error.message);
+  }
+}
 
-    await exec(`git checkout ${pullRequest.base.sha}`);
+async function getActionInputs() {
+  const workingDirectory = getInput('working-directory', { required: false });
+  const usePrArtifacts = getInput('use-pr-artifacts', { required: false });
+  const myToken = getInput('repo-token', { required: true });
 
-    const masterAssets = await getAssetSizes();
+  const cwd = path.join(process.cwd(), workingDirectory);
 
-    const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
+  return { myToken, cwd, usePrArtifacts };
+}
+
+async function diffAssets({ pullRequest, cwd, usePrArtifacts }) {
+  const prAssets = await getAssetSizes({ cwd, build: !usePrArtifacts });
+
+  await exec(`git checkout ${pullRequest.base.sha}`, { cwd });
+
+  const masterAssets = await getAssetSizes({ cwd, build: true });
+
+  const fileDiffs = diffSizes(
+    normaliseFingerprint(masterAssets),
+    normaliseFingerprint(prAssets)
+  );
 
     const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
     const body = `${buildOutputText(fileDiffs)}\n\n${uniqueCommentIdentifier}`;
@@ -62,12 +85,9 @@ async function run() {
 
 See https://github.community/t5/GitHub-Actions/Actions-not-working-correctly-for-forks/td-p/35545 for more information.`);
 
-      console.log(`Copy and paste the following into a comment yourself if you want to still show the diff:
+    console.log(`Copy and paste the following into a comment yourself if you want to still show the diff:
 
 ${body}`);
-    }
-  } catch (error) {
-    setFailed(error.message);
   }
 }
 
