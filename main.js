@@ -10,23 +10,6 @@ import {
   getAssetSizes,
 } from './lib/helpers';
 
-async function run() {
-  try {
-    const myToken = getInput('repo-token', { required: true });
-    const cwd = getInput('cwd');
-    const usePrArtifacts = getInput('usePrArtifacts');
-
-    octokit = getOctokit(myToken);
-
-    const pullRequest = await getPullRequest(context, octokit);
-    const fileDiffs = await diffAssets({ pullRequest, cwd, usePrArtifacts });
-
-    await commentOnPR({ octokit, pullRequest, fileDiffs })
-  } catch (error) {
-    setFailed(error.message);
-  }
-}
-
 async function getActionInputs() {
   const workingDirectory = getInput('working-directory', { required: false });
   const usePrArtifacts = getInput('use-pr-artifacts', { required: false });
@@ -46,7 +29,7 @@ async function diffAssets({ pullRequest, cwd, usePrArtifacts }) {
 
   const fileDiffs = diffSizes(
     normaliseFingerprint(masterAssets),
-    normaliseFingerprint(prAssets)
+    normaliseFingerprint(prAssets),
   );
 
     const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
@@ -91,4 +74,19 @@ ${body}`);
   }
 }
 
-export default run;
+
+export default async function run() {
+  try {
+    const { myToken, cwd, usePrArtifacts } = getActionInputs();
+
+    const octokit = getOctokit(myToken);
+
+    const pullRequest = await getPullRequest(context, octokit);
+    const fileDiffs = await diffAssets({ pullRequest, cwd, usePrArtifacts });
+
+    await commentOnPR({ octokit, pullRequest, fileDiffs });
+  } catch (error) {
+    setFailed(error.message);
+  }
+}
+
