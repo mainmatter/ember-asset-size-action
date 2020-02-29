@@ -11,6 +11,9 @@ inputs:
     description: 'Update existing asset size comment instead of creating a new one each time'
     required: false
     default: 'yes'
+  working-directory:
+    description: 'The directory to run the action from'
+    required: false
 runs:
   using: 'node12'
   main: 'index.js'
