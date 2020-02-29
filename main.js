@@ -13,11 +13,12 @@ import {
 async function getActionInputs() {
   const workingDirectory = getInput('working-directory', { required: false });
   const usePrArtifacts = getInput('use-pr-artifacts', { required: false });
-  const myToken = getInput('repo-token', { required: true });
+  const token = getInput('repo-token', { required: true });
 
+  console.log('eh?', token);
   const cwd = path.join(process.cwd(), workingDirectory);
 
-  return { myToken, cwd, usePrArtifacts };
+  return { token, cwd, usePrArtifacts };
 }
 
 async function diffAssets({ pullRequest, cwd, usePrArtifacts }) {
@@ -77,9 +78,9 @@ ${body}`);
 
 export default async function run() {
   try {
-    const { myToken, cwd, usePrArtifacts } = getActionInputs();
+    const { token, cwd, usePrArtifacts } = getActionInputs();
 
-    const octokit = getOctokit(myToken);
+    const octokit = getOctokit(token);
 
     const pullRequest = await getPullRequest(context, octokit);
     const fileDiffs = await diffAssets({ pullRequest, cwd, usePrArtifacts });
