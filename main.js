@@ -1,4 +1,4 @@
-import { getInput, setFailed } from '@actions/core';
+import { getInput, debug, setFailed } from '@actions/core';
 import { exec } from '@actions/exec';
 import { getOctokit, context } from '@actions/github';
 
@@ -14,8 +14,10 @@ async function getActionInputs() {
   const workingDirectory = getInput('working-directory', { required: false });
   const usePrArtifacts = getInput('use-pr-artifacts', { required: false });
   const token = getInput('repo-token', { required: true });
-
+  
   const cwd = path.join(process.cwd(), workingDirectory);
+  debug(`cwd: ${cwd}`);
+  debug(`token: ${token}`);
 
   return { token, cwd, usePrArtifacts };
 }
