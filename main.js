@@ -25,7 +25,7 @@ async function getActionInputs() {
 async function diffAssets({ pullRequest, cwd, usePrArtifacts }) {
   const prAssets = await getAssetSizes({ cwd, build: !usePrArtifacts });
 
-  await exec(`git checkout ${pullRequest.base.sha}`, { cwd });
+  await exec(`git checkout ${pullRequest.base.sha}`, [], { cwd });
 
   const masterAssets = await getAssetSizes({ cwd, build: true });
 
