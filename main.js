@@ -1,6 +1,6 @@
 import { getInput, setFailed } from '@actions/core';
 import { exec } from '@actions/exec';
-import { GitHub, context } from '@actions/github';
+import { getOctokit, context } from '@actions/github';
 
 import {
   normaliseFingerprint,
@@ -15,7 +15,7 @@ let octokit;
 async function run() {
   try {
     const myToken = getInput('repo-token', { required: true });
-    octokit = new GitHub(myToken);
+    octokit = getOctokit(myToken);
     const pullRequest = await getPullRequest(context, octokit);
 
     const prAssets = await getAssetSizes();
