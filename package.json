@@ -19,19 +19,20 @@
   "author": "Chris Manson",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.0.0",
-    "@actions/exec": "^1.0.0",
-    "@actions/github": "^1.0.0",
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "@actions/github": "^4.0.0",
     "asset-size-reporter": "^0.1.0",
     "esm": "^3.2.25",
-    "pretty-bytes": "^5.0.0"
+    "pretty-bytes": "^5.0.0",
+    "yn": "^4.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "cross-env": "^6.0.3",
-    "mocha": "^6.2.1",
+    "cross-env": "^7.0.2",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.22.0",
+    "mocha": "^6.2.3"
   }
 }
