@@ -26,15 +26,37 @@ async function run() {
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 
-    const body = buildOutputText(fileDiffs);
+    const uniqueCommentIdentifier = '_Created by ember-asset-size-action_';
+    const body = `${buildOutputText(fileDiffs)}\n\n${uniqueCommentIdentifier}`;
 
-    try {
-      await octokit.issues.createComment({
+    const updateExistingComment = getInput('update-comments', { required: false });
+    let existingComment = false;
+
+    if (updateExistingComment) {
+      const { data: comments } = await octokit.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: pullRequest.number,
-        body,
       });
+      existingComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(uniqueCommentIdentifier));
+    }
+
+    try {
+      if (existingComment) {
+        await octokit.issues.updateComment({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          comment_id: existingComment.id,
+          body,
+        });
+      } else {
+        await octokit.issues.createComment({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          issue_number: pullRequest.number,
+          body,
+        });
+      }
     } catch (e) {
       console.log(`Could not create a comment automatically. This could be because github does not allow writing from actions on a fork.
 

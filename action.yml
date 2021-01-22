@@ -7,6 +7,8 @@ branding:
 inputs:
   repo-token:
     description: 'The GITHUB_TOKEN secret'
+  update-comments:
+    description: 'Optional: Set to true to update existing asset size comment instead of creating a new one each time'
 runs:
   using: 'node12'
   main: 'index.js'
