@@ -23,7 +23,10 @@ jobs:
     - uses: simplabs/ember-asset-size-action@v1
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        update-comments: true
 ```
+
+`update-comments` is an optional input. When set to true the bot will search for a comment it has already made on an issue and update it, instead of creating a new one each run.
 
 Note: as this action requires access to the "base" commit of a PR branch we need to fetch the whole repo by adding `fetch-depth: 0` to the `actions/checkout` configuration.
 
