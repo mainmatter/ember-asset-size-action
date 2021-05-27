@@ -93,4 +93,3 @@ export default async function run() {
     setFailed(error.message);
   }
 }
-
