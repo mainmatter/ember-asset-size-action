@@ -38,7 +38,7 @@ async function run() {
         repo: context.repo.repo,
         issue_number: pullRequest.number,
       });
-      existingComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(uniqueCommentIdentifier));
+      existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(uniqueCommentIdentifier));
     }
 
     try {
