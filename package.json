@@ -4,8 +4,9 @@
   "private": true,
   "description": "Show asset size changes on ",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=simplabs/ember-asset-size-action mocha -r esm"
+    "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=simplabs/ember-asset-size-action mocha"
   },
   "repository": {
     "type": "git",

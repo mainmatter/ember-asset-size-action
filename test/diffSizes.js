@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { diffSizes } from '../lib/helpers';
+import { diffSizes } from '../lib/helpers.js';
 
 describe('Diff Sizes', function () {
   it('should show correct diffs for each file', function () {
