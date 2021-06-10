@@ -26,7 +26,7 @@ async function run() {
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 
-    const uniqueCommentIdentifier = '_Created by ember-asset-size-action_';
+    const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
     const body = `${buildOutputText(fileDiffs)}\n\n${uniqueCommentIdentifier}`;
 
     const updateExistingComment = getInput('update-comments', { required: false });
