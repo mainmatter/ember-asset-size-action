@@ -32,7 +32,7 @@ async function run() {
     const updateExistingComment = getInput('update-comments', { required: false });
     let existingComment = false;
 
-    if (updateExistingComment) {
+    if (updateExistingComment === 'yes') {
       const { data: comments } = await octokit.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,

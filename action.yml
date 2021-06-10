@@ -8,7 +8,9 @@ inputs:
   repo-token:
     description: 'The GITHUB_TOKEN secret'
   update-comments:
-    description: 'Optional: Set to true to update existing asset size comment instead of creating a new one each time'
+    description: 'Update existing asset size comment instead of creating a new one each time'
+    required: false
+    default: 'yes'
 runs:
   using: 'node12'
   main: 'index.js'
