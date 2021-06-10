@@ -6,6 +6,7 @@ module.exports = {
   rules: {
     'consistent-return': 0,
     'no-console': 0,
+    'import/extensions': 0,
   },
   overrides: [
     // node files
