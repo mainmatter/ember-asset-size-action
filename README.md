@@ -25,6 +25,17 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
 
+By default `ember-asset-size-action` will update the existing comment when the PR has been updated in any way.
+
+If you want to disable this behaviour and have the action create a new comment every time, you can pass the input `update-comments` with a value `false`.
+
+```yaml
+- uses: simplabs/ember-asset-size-action@v1
+  with:
+    repo-token: "${{ secrets.GITHUB_TOKEN }}"
+    update-comments: "no" # apparently booleans don't work as expected
+```
+
 Note: as this action requires access to the "base" commit of a PR branch we need to fetch the whole repo by adding `fetch-depth: 0` to the `actions/checkout` configuration.
 
 If you would like to follow discussion on this problem you can find the issue on github here: https://github.com/actions/checkout/issues/93
