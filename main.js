@@ -33,24 +33,24 @@ async function run() {
     let existingComment = false;
 
     if (updateExistingComment === 'yes') {
-      const { data: comments } = await octokit.issues.listComments({
+      const { data: comments } = await octokit.rest.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: pullRequest.number,
       });
-      existingComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(uniqueCommentIdentifier));
+      existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(uniqueCommentIdentifier));
     }
 
     try {
       if (existingComment) {
-        await octokit.issues.updateComment({
+        await octokit.rest.issues.updateComment({
           owner: context.repo.owner,
           repo: context.repo.repo,
           comment_id: existingComment.id,
           body,
         });
       } else {
-        await octokit.issues.createComment({
+        await octokit.rest.issues.createComment({
           owner: context.repo.owner,
           repo: context.repo.repo,
           issue_number: pullRequest.number,
