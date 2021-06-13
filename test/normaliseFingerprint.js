@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { normaliseFingerprint } from '../lib/helpers.js';
+import { normaliseFingerprint } from '../lib/helpers';
 
 describe('Normalise Fingerprint', function () {
   it('should remove fingerprints from file names', function () {
