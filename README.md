@@ -94,3 +94,7 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
+
+## License
+
+Ember Simple Auth is developed by and &copy; [simplabs GmbH](http://simplabs.com) and contributors. It is released under the [MIT License](LICENSE).
