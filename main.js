@@ -12,6 +12,25 @@ import {
 
 let octokit;
 
+async function run() {
+  try {
+    const { token } = await getActionInputs();
+
+    octokit = getOctokit(token);
+
+    const pullRequest = await getPullRequest(context);
+    const fileDiffs = await diffAssets({ pullRequest });
+
+    await commentOnPR({ octokit, pullRequest, fileDiffs });
+  } catch (error) {
+    setFailed(error.message);
+  }
+}
+
+/** ************************************
+  * Helpers
+  ************************************ */
+
 async function getActionInputs() {
   const token = getInput('repo-token', { required: true });
 
@@ -70,21 +89,6 @@ See https://github.community/t5/GitHub-Actions/Actions-not-working-correctly-for
     console.log(`Copy and paste the following into a comment yourself if you want to still show the diff:
 
 ${body}`);
-  }
-}
-
-async function run() {
-  try {
-    const { token } = await getActionInputs();
-
-    octokit = getOctokit(token);
-
-    const pullRequest = await getPullRequest(context);
-    const fileDiffs = await diffAssets({ pullRequest });
-
-    await commentOnPR({ octokit, pullRequest, fileDiffs });
-  } catch (error) {
-    setFailed(error.message);
   }
 }
 
