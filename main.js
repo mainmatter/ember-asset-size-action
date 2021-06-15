@@ -12,7 +12,7 @@ import {
 
 let octokit;
 
-async function run() {
+export default async function run() {
   try {
     const { token } = await getActionInputs();
 
@@ -27,9 +27,9 @@ async function run() {
   }
 }
 
-/** ************************************
-  * Helpers
-  ************************************ */
+/// /////////////////////////////////
+// Helpers
+/// /////////////////////////////////
 
 async function getActionInputs() {
   const token = getInput('repo-token', { required: true });
@@ -91,5 +91,3 @@ See https://github.community/t5/GitHub-Actions/Actions-not-working-correctly-for
 ${body}`);
   }
 }
-
-export default run;
