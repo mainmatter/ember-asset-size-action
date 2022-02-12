@@ -7,8 +7,8 @@ branding:
 inputs:
   repo-token:
     description: 'The GITHUB_TOKEN secret'
-  show-totals:
-    description: 'Display a table of bundle size total sizes'
+  show-total-size-diff:
+    description: 'Display a table of the total differences in size for JS & CSS'
     required: false
     default: 'no'
   update-comments:

@@ -20,7 +20,7 @@ async function run() {
     octokit = getOctokit(myToken);
     const pullRequest = await getPullRequest(context, octokit);
 
-    const showTotals = getInput('show-totals', { required: false }) === 'yes';
+    const showTotalSizeDiff = getInput('show-total-size-diff', { required: false }) === 'yes';
     const prAssets = await getAssetSizes();
 
     await exec(`git checkout ${pullRequest.base.sha}`);
@@ -32,7 +32,7 @@ async function run() {
     const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
     
     let totalSizeDiff = null;
-    if (showTotals) {
+    if (showTotalSizeDiff) {
       const masterTotals = sumAssetSizes(masterAssets);
       const prTotals = sumAssetSizes(prAssets);
       totalSizeDiff = diffTotals(masterTotals, prTotals);

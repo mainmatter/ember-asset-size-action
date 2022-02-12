@@ -97,13 +97,13 @@ jobs:
 
 ### Displaying total asset sizes
 
-If you'd like the PR comment to display total asset sizes for the PR's build, not just the diff compared to the base branch, you can use the `show-totals` option:
+If you'd like the PR comment to display the diff between the total asset sizes (JS & CSS) for the PR's build against the base branch, you can use the `show-total-size-diff` option:
 
 ```yaml
 - uses: simplabs/ember-asset-size-action@v1
   with:
     repo-token: "${{ secrets.GITHUB_TOKEN }}"
-    show-totals: "yes"
+    show-total-size-diff: "yes"
 ```
 
 ## License
