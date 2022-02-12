@@ -3,7 +3,7 @@ import { diffTotals } from "../lib/helpers";
 
 describe("Diff Totals", function () {
   it("should correctly report size differences between two branches (decreases, increases, and unchanged)", function () {
-    const masterTotals = {
+    const baseBranchTotals = {
       css: {
         raw: 2000,
         gzip: 20,
@@ -25,7 +25,7 @@ describe("Diff Totals", function () {
       },
     };
 
-    const diff = diffTotals(prTotals, masterTotals);
+    const diff = diffTotals(baseBranchTotals, prTotals);
 
     expect(diff).to.deep.equal({
       css: {
