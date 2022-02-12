@@ -5,6 +5,7 @@ import { getOctokit, context } from '@actions/github';
 import {
   normaliseFingerprint,
   diffSizes,
+  diffTotals,
   buildOutputText,
   getPullRequest,
   getAssetSizes,
@@ -21,7 +22,6 @@ async function run() {
 
     const showTotals = getInput('show-totals', { required: false }) === 'yes';
     const prAssets = await getAssetSizes();
-    const prTotals = showTotals ? sumAssetSizes(prAssets) : undefined;
 
     await exec(`git checkout ${pullRequest.base.sha}`);
 
@@ -30,7 +30,15 @@ async function run() {
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 
     const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
-    const body = `${buildOutputText(fileDiffs, prTotals)}\n\n${uniqueCommentIdentifier}`;
+    
+    let totalSizeDiff = null;
+    if (showTotals) {
+      const masterTotals = sumAssetSizes(masterAssets);
+      const prTotals = sumAssetSizes(prAssets);
+      totalSizeDiff = diffTotals(masterTotals, prTotals);
+    }
+
+    const body = `${buildOutputText(fileDiffs, totalSizeDiff)}\n\n${uniqueCommentIdentifier}`;
 
     const updateExistingComment = getInput('update-comments', { required: false });
     let existingComment = false;
