@@ -97,4 +97,4 @@ jobs:
 
 ## License
 
-Ember Simple Auth is developed by and &copy; [simplabs GmbH](http://simplabs.com) and contributors. It is released under the [MIT License](LICENSE).
+Ember Simple Auth is developed by and &copy; [Mainmatter GmbH](http://mainmatter.com) and contributors. It is released under the [MIT License](LICENSE).
