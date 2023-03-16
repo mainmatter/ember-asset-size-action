@@ -26,7 +26,8 @@ async function run() {
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 
-    const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
+    const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/mainmatter/ember-asset-size-action/)_';
+    const legacyUniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
     const body = `${buildOutputText(fileDiffs)}\n\n${uniqueCommentIdentifier}`;
 
     const updateExistingComment = getInput('update-comments', { required: false });
@@ -38,7 +39,7 @@ async function run() {
         repo: context.repo.repo,
         issue_number: pullRequest.number,
       });
-      existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(uniqueCommentIdentifier));
+      existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && (comment.body.endsWith(uniqueCommentIdentifier) || comment.body.endsWith(legacyUniqueCommentIdentifier)));
     }
 
     try {
