@@ -53,7 +53,10 @@ function normaliseFingerprint(obj) {
   const normalisedObject = {};
 
   Object.keys(obj).forEach((key) => {
-    const match = key.match(/dist\/assets\/([\w-]+)-\w{32}(.\w+)/);
+    const chunkRegex = /dist\/assets\/(chunk\.\d+)\.\w+(.\w+)/;
+    const assetRegex = /dist\/assets\/([\w-]+)-\w{32}(.\w+)/;
+
+    const match = key.match(assetRegex) || key.match(chunkRegex);
 
     if (match) {
       const [, fileName, extension] = match;
