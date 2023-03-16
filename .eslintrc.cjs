@@ -8,6 +8,7 @@ module.exports = {
     'no-console': 0,
     'import/extensions': 0,
   },
+  ignorePatterns: ['dist/*.js'],
   overrides: [
     // node files
     {
