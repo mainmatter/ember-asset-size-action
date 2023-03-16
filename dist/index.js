@@ -162,12 +162,17 @@ async function getAssetSizes() {
 }
 
 function reportTable(data) {
-  let table = `File | raw | gzip
+  let table = `<details>
+  <summary>Details</summary>
+
+File | raw | gzip
 --- | --- | ---
 `;
   data.forEach((item) => {
     table += `${item.file}|${pretty_bytes_default()(item.raw, { signed: true })}|${pretty_bytes_default()(item.gzip, { signed: true })}\n`;
   });
+
+  table += '\n</details>\n';
 
   return table;
 }
@@ -194,17 +199,18 @@ function buildOutputText(output) {
   });
 
   let outputText = '';
+  const totalFiles = bigger.length + smaller.length + same.length;
 
   if (bigger.length) {
-    outputText += `Files that got Bigger 🚨:\n\n${reportTable(bigger)}\n`;
+    outputText += `${bigger.length}/${totalFiles} Files got Bigger 🚨:\n\n${reportTable(bigger)}\n`;
   }
 
   if (smaller.length) {
-    outputText += `Files that got Smaller 🎉:\n\n${reportTable(smaller)}\n\n`;
+    outputText += `${smaller.length}/${totalFiles} Files got Smaller 🎉:\n\n${reportTable(smaller)}\n`;
   }
 
   if (same.length) {
-    outputText += `Files that stayed the same size 🤷‍:\n\n${reportTable(same)}\n\n`;
+    outputText += `${same.length}/${totalFiles} Files stayed the same size 🤷‍:\n\n${reportTable(same)}\n`;
   }
 
   return outputText.trim();

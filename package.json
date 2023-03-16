@@ -5,7 +5,7 @@
   "description": "Show asset size changes on ",
   "main": "index.js",
   "scripts": {
-    "test": "npm run build && cross-env NODE_ENV=TEST GITHUB_REPOSITORY=simplabs/ember-asset-size-action mocha -r esm",
+    "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=simplabs/ember-asset-size-action mocha -r esm",
     "lint": "eslint .",
     "build": "ncc build index.js"
   },
