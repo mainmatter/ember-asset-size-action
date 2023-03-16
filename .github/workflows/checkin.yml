@@ -1,5 +1,5 @@
 name: "PR Checks"
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
   check_pr:
@@ -20,3 +20,6 @@ jobs:
 
     - name: "npm test"
       run: npm test
+
+    - name: "ensure built"
+      run: npm run build && [ -z "`git status --porcelain`" ]
