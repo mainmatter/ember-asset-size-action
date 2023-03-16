@@ -5,13 +5,13 @@
   "description": "Show asset size changes on ",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=simplabs/ember-asset-size-action mocha -r esm",
+    "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=mainmatter/ember-asset-size-action mocha -r esm",
     "lint": "eslint .",
     "build": "ncc build index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mansona/ember-asset-size-action.git"
+    "url": "git+https://github.com/mainmatter/ember-asset-size-action.git"
   },
   "keywords": [
     "actions",
