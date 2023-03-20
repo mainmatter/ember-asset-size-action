@@ -13,7 +13,7 @@ module.exports = {
     // node files
     {
       files: [
-        'test/**/*.js',
+        'test/**/*.mjs',
       ],
       env: {
         node: true,
