@@ -8,7 +8,7 @@ import {
   buildOutputText,
   getPullRequest,
   getAssetSizes,
-} from './lib/helpers';
+} from './lib/helpers.mjs';
 
 let octokit;
 
@@ -73,3 +73,6 @@ ${body}`);
 }
 
 export default run;
+
+// auto-execute the run function
+run();

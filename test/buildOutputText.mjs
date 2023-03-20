@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { buildOutputText } from '../lib/helpers';
+import { buildOutputText } from '../lib/helpers.mjs';
 
 describe('Build output Text', function () {
   it('should show the correct table output for a file diff', function () {
