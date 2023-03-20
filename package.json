@@ -27,7 +27,7 @@
     "asset-size-reporter": "^0.1.0",
     "esm": "^3.2.25",
     "pretty-bytes": "^5.6.0",
-    "yn": "^4.0.0"
+    "yn": "^5.0.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.36.1",
