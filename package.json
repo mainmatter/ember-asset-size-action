@@ -33,7 +33,7 @@
     "@vercel/ncc": "^0.36.1",
     "chai": "^4.3.4",
     "cross-env": "^7.0.3",
-    "eslint": "^7.28.0",
+    "eslint": "^8.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.23.4",
     "mocha": "^8.0.0"
