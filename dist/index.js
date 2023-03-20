@@ -20413,23 +20413,27 @@ async function getAssetSizes() {
   return prAssets;
 }
 
-function reportTable(data) {
-  let table = `<details>
-  <summary>Details</summary>
-
-File | raw | gzip
+function reportTable(data, wrapInDetails = true) {
+  let table = `File | raw | gzip
 --- | --- | ---
 `;
   data.forEach((item) => {
     table += `${item.file}|${prettyBytes(item.raw, { signed: true })}|${prettyBytes(item.gzip, { signed: true })}\n`;
   });
 
-  table += '\n</details>\n';
+  if (wrapInDetails) {
+    return `<details>
+  <summary>Details</summary>
+
+${table}
+</details>
+`;
+  }
 
   return table;
 }
 
-function buildOutputText(output) {
+function buildOutputText(output, showTotals) {
   const files = Object.keys(output).map((key) => ({
     file: key,
     raw: output[key].raw,
@@ -20467,7 +20471,44 @@ function buildOutputText(output) {
     outputText += `${same.length}/${totalFiles} Files stayed the same size 🤷‍:\n\n${reportTable(same)}\n`;
   }
 
+  if (showTotals) {
+    const totals = calculateTotals(files);
+    const totalsRows = [
+      { file: 'js', ...totals.js },
+      { file: 'css', ...totals.css },
+    ];
+
+    outputText += `Total assets size diff📊:\n\n${reportTable(totalsRows, false)}`;
+  }
+
   return outputText.trim();
+}
+
+function calculateTotals(files) {
+  const result = {
+    js: {
+      raw: 0,
+      gzip: 0,
+    },
+    css: {
+      raw: 0,
+      gzip: 0,
+    },
+  };
+
+  files.forEach((file) => {
+    if (file.file.endsWith('.js')) {
+      result.js.raw += file.raw;
+      result.js.gzip += file.gzip;
+    }
+
+    if (file.file.endsWith('.css')) {
+      result.css.raw += file.raw;
+      result.css.gzip += file.gzip;
+    }
+  });
+
+  return result;
 }
 
 ;// CONCATENATED MODULE: ./main.js
@@ -20485,6 +20526,7 @@ async function run() {
     octokit = (0,github.getOctokit)(myToken);
     const pullRequest = await getPullRequest(github.context, octokit);
 
+    const showTotalSizeDiff = (0,core.getInput)('show-total-size-diff', { required: false }) === 'yes';
     const prAssets = await getAssetSizes();
 
     await (0,exec.exec)(`git checkout ${pullRequest.base.sha}`);
@@ -20495,7 +20537,8 @@ async function run() {
 
     const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/mainmatter/ember-asset-size-action/)_';
     const legacyUniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
-    const body = `${buildOutputText(fileDiffs)}\n\n${uniqueCommentIdentifier}`;
+
+    const body = `${buildOutputText(fileDiffs, showTotalSizeDiff)}\n\n${uniqueCommentIdentifier}`;
 
     const updateExistingComment = (0,core.getInput)('update-comments', { required: false });
     let existingComment = false;
