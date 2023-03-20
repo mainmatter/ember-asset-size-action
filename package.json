@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "description": "Show asset size changes on ",
-  "main": "index.js",
+  "type": "module",
+  "exports": "./main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=TEST GITHUB_REPOSITORY=mainmatter/ember-asset-size-action mocha",
     "lint": "eslint .",
-    "build": "ncc build index.js"
+    "build": "ncc build main.js"
   },
   "repository": {
     "type": "git",
