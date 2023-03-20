@@ -24,11 +24,13 @@ async function run() {
     const workingDirectory = getInput('working-directory', { required: false });
     const cwd = path.join(process.cwd(), workingDirectory);
 
-    const prAssets = await getAssetSizes({ cwd });
+    const buildCommand = getInput('build-npm-command', { required: false });
+
+    const prAssets = await getAssetSizes({ cwd, buildCommand });
 
     await exec(`git checkout ${pullRequest.base.sha}`);
 
-    const masterAssets = await getAssetSizes({ cwd });
+    const masterAssets = await getAssetSizes({ cwd, buildCommand });
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 
