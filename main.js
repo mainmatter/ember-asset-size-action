@@ -18,6 +18,7 @@ async function run() {
     octokit = getOctokit(myToken);
     const pullRequest = await getPullRequest(context, octokit);
 
+    const showTotalSizeDiff = getInput('show-total-size-diff', { required: false }) === 'yes';
     const prAssets = await getAssetSizes();
 
     await exec(`git checkout ${pullRequest.base.sha}`);
@@ -28,7 +29,8 @@ async function run() {
 
     const uniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/mainmatter/ember-asset-size-action/)_';
     const legacyUniqueCommentIdentifier = '_Created by [ember-asset-size-action](https://github.com/simplabs/ember-asset-size-action/)_';
-    const body = `${buildOutputText(fileDiffs)}\n\n${uniqueCommentIdentifier}`;
+
+    const body = `${buildOutputText(fileDiffs, showTotalSizeDiff)}\n\n${uniqueCommentIdentifier}`;
 
     const updateExistingComment = getInput('update-comments', { required: false });
     let existingComment = false;
