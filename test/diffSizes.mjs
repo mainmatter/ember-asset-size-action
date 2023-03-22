@@ -18,6 +18,7 @@ describe('Diff Sizes', function () {
       'vendor.js': { raw: 2329192, gzip: 666522, brotli: null },
       'ember-website.css': { raw: 40196, gzip: 10223, brotli: null },
       'vendor.css': { raw: 57988, gzip: 17920, brotli: null },
+      'extra.js': { raw: 2388, gzip: 953, brotli: null },
     };
 
     const diff = diffSizes(masterAssets, prAssets);
@@ -29,6 +30,7 @@ describe('Diff Sizes', function () {
       'vendor.js': { raw: 388401, gzip: 129560 },
       'ember-website.css': { raw: 0, gzip: 0 },
       'vendor.css': { raw: 0, gzip: 0 },
+      'extra.js': { raw: -2388, gzip: -953, deleted: true },
     });
   });
 });
