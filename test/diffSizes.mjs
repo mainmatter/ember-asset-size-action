@@ -30,7 +30,7 @@ describe('Diff Sizes', function () {
       'vendor.js': { raw: 388401, gzip: 129560 },
       'ember-website.css': { raw: 0, gzip: 0 },
       'vendor.css': { raw: 0, gzip: 0 },
-      'extra.js': { raw: -2388, gzip: -953 },
+      'extra.js': { raw: -2388, gzip: -953, deleted: true },
     });
   });
 });
