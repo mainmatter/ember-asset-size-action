@@ -23551,10 +23551,14 @@ async function installDependencies() {
   return (0,exec.exec)('npm', ['install']);
 }
 
-async function getAssetSizes({ cwd }) {
+async function getAssetSizes({ cwd, buildCommand }) {
   await installDependencies();
 
-  await (0,exec.exec)('npx', ['ember', 'build', '-prod'], { cwd });
+  if (buildCommand) {
+    await (0,exec.exec)(`npm`, ['run', buildCommand], { cwd });
+  } else {
+    await (0,exec.exec)('npx', ['ember', 'build', '-prod'], { cwd });
+  }
 
   let prAssets;
 
@@ -23699,11 +23703,13 @@ async function run() {
     const workingDirectory = (0,core.getInput)('working-directory', { required: false });
     const cwd = external_path_.join(process.cwd(), workingDirectory);
 
-    const prAssets = await getAssetSizes({ cwd });
+    const buildCommand = (0,core.getInput)('build-npm-command', { required: false });
+
+    const prAssets = await getAssetSizes({ cwd, buildCommand });
 
     await (0,exec.exec)(`git checkout ${pullRequest.base.sha}`);
 
-    const masterAssets = await getAssetSizes({ cwd });
+    const masterAssets = await getAssetSizes({ cwd, buildCommand });
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 
