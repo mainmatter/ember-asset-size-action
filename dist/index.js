@@ -23311,6 +23311,8 @@ var core = __nccwpck_require__(2186);
 var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var github = __nccwpck_require__(5438);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(1017);
 ;// CONCATENATED MODULE: ./node_modules/pretty-bytes/index.js
 const BYTE_UNITS = [
 	'B',
@@ -23519,13 +23521,13 @@ async function getPullRequest(context, octokit) {
 
 async function installDependencies() {
   if (external_fs_.existsSync('yarn.lock')) {
-    return (0,exec.exec)('yarn --frozen-lockfile');
+    return (0,exec.exec)('yarn', ['--frozen-lockfile']);
   }
 
   if (external_fs_.existsSync('package-lock.json')) {
     const packageLock = JSON.parse(external_fs_.readFileSync('package-lock.json'));
     let npmVersion = '';
-    await (0,exec.exec)('npm -v', {
+    await (0,exec.exec)('npm', ['-v'], {
       stdout: (data) => {
         npmVersion += data.toString();
       },
@@ -23535,20 +23537,20 @@ async function installDependencies() {
       packageLock.lockfileVersion === 2
       && semver.lt(npmVersion, '7.0.0')
     ) {
-      return (0,exec.exec)('npx npm@7 ci');
+      return (0,exec.exec)('npx', ['npm@7', 'ci']);
     }
 
-    return (0,exec.exec)('npm ci');
+    return (0,exec.exec)('npm', ['ci']);
   }
 
   console.warn('No package-lock.json or yarn.lock detected! We strongly recommend committing one');
-  return (0,exec.exec)('npm install');
+  return (0,exec.exec)('npm', ['install']);
 }
 
-async function getAssetSizes() {
+async function getAssetSizes({ cwd }) {
   await installDependencies();
 
-  await (0,exec.exec)('npx ember build -prod');
+  await (0,exec.exec)('npx', ['ember', 'build', '-prod'], { cwd });
 
   let prAssets;
 
@@ -23560,7 +23562,7 @@ async function getAssetSizes() {
         prAssets = JSON.parse(text);
       },
     },
-    cwd: process.cwd(),
+    cwd,
   });
 
   return prAssets;
@@ -23679,6 +23681,7 @@ function calculateTotals(files) {
 
 
 
+
 let octokit;
 
 async function run() {
@@ -23688,11 +23691,15 @@ async function run() {
     const pullRequest = await getPullRequest(github.context, octokit);
 
     const showTotalSizeDiff = (0,core.getInput)('show-total-size-diff', { required: false }) === 'yes';
-    const prAssets = await getAssetSizes();
+
+    const workingDirectory = (0,core.getInput)('working-directory', { required: false });
+    const cwd = external_path_.join(process.cwd(), workingDirectory);
+
+    const prAssets = await getAssetSizes({ cwd });
 
     await (0,exec.exec)(`git checkout ${pullRequest.base.sha}`);
 
-    const masterAssets = await getAssetSizes();
+    const masterAssets = await getAssetSizes({ cwd });
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 

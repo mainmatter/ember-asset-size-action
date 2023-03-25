@@ -1,6 +1,7 @@
 import { getInput, setFailed } from '@actions/core';
 import { exec } from '@actions/exec';
 import { getOctokit, context } from '@actions/github';
+import path from 'path';
 
 import {
   normaliseFingerprint,
@@ -19,11 +20,15 @@ async function run() {
     const pullRequest = await getPullRequest(context, octokit);
 
     const showTotalSizeDiff = getInput('show-total-size-diff', { required: false }) === 'yes';
-    const prAssets = await getAssetSizes();
+
+    const workingDirectory = getInput('working-directory', { required: false });
+    const cwd = path.join(process.cwd(), workingDirectory);
+
+    const prAssets = await getAssetSizes({ cwd });
 
     await exec(`git checkout ${pullRequest.base.sha}`);
 
-    const masterAssets = await getAssetSizes();
+    const masterAssets = await getAssetSizes({ cwd });
 
     const fileDiffs = diffSizes(normaliseFingerprint(masterAssets), normaliseFingerprint(prAssets));
 

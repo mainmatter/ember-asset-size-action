@@ -15,6 +15,10 @@ inputs:
     description: 'Update existing asset size comment instead of creating a new one each time'
     required: false
     default: 'yes'
+  working-directory:
+    description: 'The directory to run ember build from (and where the dist folder will be)'
+    required: false
+    default: ''
 runs:
   using: 'node16'
   main: 'dist/index.js'
