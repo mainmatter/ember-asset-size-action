@@ -19,6 +19,10 @@ inputs:
     description: 'The directory to run ember build from (and where the dist folder will be)'
     required: false
     default: ''
+  build-npm-command:
+    description: 'Customise the npm script that you want to use to build your app'
+    required: false
+    default: ''
 runs:
   using: 'node16'
   main: 'dist/index.js'
