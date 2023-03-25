@@ -23524,6 +23524,10 @@ async function installDependencies() {
     return (0,exec.exec)('yarn', ['--frozen-lockfile']);
   }
 
+  if (external_fs_.existsSync('pnpm-lock.yaml')) {
+    return (0,exec.exec)('pnpm', ['i', '--frozen-lockfile']);
+  }
+
   if (external_fs_.existsSync('package-lock.json')) {
     const packageLock = JSON.parse(external_fs_.readFileSync('package-lock.json'));
     let npmVersion = '';
