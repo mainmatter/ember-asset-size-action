@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: mainmatter/ember-asset-size-action@v2
+    - uses: mainmatter/ember-asset-size-action@v3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
@@ -30,7 +30,7 @@ By default `ember-asset-size-action` will update the existing comment when the P
 If you want to disable this behaviour and have the action create a new comment every time, you can pass the input `update-comments` with a value `false`.
 
 ```yaml
-- uses: mainmatter/ember-asset-size-action@v2
+- uses: mainmatter/ember-asset-size-action@v3
   with:
     repo-token: "${{ secrets.GITHUB_TOKEN }}"
     update-comments: "no" # apparently booleans don't work as expected
@@ -58,7 +58,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: mainmatter/ember-asset-size-action@v2
+    - uses: mainmatter/ember-asset-size-action@v3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
@@ -88,7 +88,7 @@ jobs:
       with:
         fetch-depth: 0
     - run: echo //registry.npmjs.org/:_authToken=$\{NPM_TOKEN\} >> .npmrc
-    - uses: mainmatter/ember-asset-size-action@v2
+    - uses: mainmatter/ember-asset-size-action@v3
       env:
         NPM_TOKEN: "${{ secrets.YOUR_REPO_NPM_TOKEN }}"
       with:
@@ -100,7 +100,7 @@ jobs:
 If you'd like the PR comment to display the diff between the total asset sizes (JS & CSS) for the PR's build against the base branch, you can use the `show-total-size-diff` option:
 
 ```yaml
-- uses: simplabs/ember-asset-size-action@v2
+- uses: simplabs/ember-asset-size-action@v3
   with:
     repo-token: "${{ secrets.GITHUB_TOKEN }}"
     show-total-size-diff: "yes"
