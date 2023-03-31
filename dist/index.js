@@ -23532,8 +23532,10 @@ async function installDependencies() {
     const packageLock = JSON.parse(external_fs_.readFileSync('package-lock.json'));
     let npmVersion = '';
     await (0,exec.exec)('npm', ['-v'], {
-      stdout: (data) => {
-        npmVersion += data.toString();
+      listeners: {
+        stdout: (data) => {
+          npmVersion += data.toString();
+        },
       },
     });
 
