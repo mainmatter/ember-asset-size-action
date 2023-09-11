@@ -30,7 +30,7 @@
     "semver": "^7.3.8"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.36.1",
+    "@vercel/ncc": "^0.38.0",
     "chai": "^4.3.4",
     "cross-env": "^7.0.3",
     "eslint": "^8.0.0",
